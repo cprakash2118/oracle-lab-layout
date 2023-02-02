@@ -38,6 +38,14 @@ Step 4) Build Oracle Linux KVM virtualization manager (Engine).
 	- Interface - br0 & br1 (Both interface add before installation).
 	
 	
+	Parttion details:-
+	"/boot" - 1024 (MiB) - On primary partition 
+    "/"     - 25 Gib     - On LVM 
+     VGname - "rootVG"
+	 LVM name - rootVol 
+	 
+	 Time Zone - other imp update then initiate the installation.
+
 	
 	
 
