@@ -47,7 +47,7 @@ Step 4) Build Oracle Linux KVM virtualization manager (Engine).
 	 Time Zone - other imp update then initiate the installation.
 ##### Example 
 vim /etc/hosts
-172.168.21.16   qcs-sl-base06.example.com   qcs-sl-base06
+172.168.21.20   ole-node01.example.com          ole-node01
 172.168.21.21   qcs-basekvm-host01.example.com  qcs-basekvm-host01
 172.168.21.22   qcs-basekvm-host02.example.com  qcs-basekvm-host02
 
@@ -66,6 +66,47 @@ part /boot --fstype="xfs" --ondisk=sda --size=1024
 volgroup rootVG --pesize=4096 pv.1105
 logvol / --fstype="xfs" --size=30720 --name=rootVol --vgname=rootVG
 logvol /var --fstype="xfs" --size=197191 --name=varVol --vgname=rootVG
+################
+Enable the pki-deps and PostgreSQL:13 appstream modules.
+# dnf -y module enable pki-deps                   
+# dnf -y module enable postgresql:13       
+ 
+Disable the virt:ol module and enable the virt:kvm_utils2 module.
+# dnf -y module disable virt:ol         
+# dnf -y module enable virt:kvm_utils2      
+
+For Oracle Linux yum server hosts
+Install the Oracle Linux Virtualization Manager Release 4.4 package and enable the required repositories.
+Enable the ol8_baseos_latest repository.
+# dnf config-manager --enable ol8_baseos_latest    
+    
+
+Install the Oracle Linux Virtualization Manager Release 4.4 package.
+# dnf install oracle-ovirt-release-el8                    
+Use the dnf command to verify that the required repositories are enabled.
+
+
+Clear the dnf cache.
+# dnf clean all                        
+
+List the configured repositories and verify that the required repositories are enabled.
+# dnf repolist                 
+
+The following repositories must be enabled:
+ol8_baseos_latest
+ol8_appstream
+ol8_kvm_appstream
+ol8_ovirt44
+ol8_ovirt44_extras
+ol8_64_gluster_appstream
+(For VDSM) ol8_64_UEKR7
+
+If a required repository is not enabled, use the dnf config-manager to enable it.
+# dnf config-manager --enable repository           
+
+Install the Manager using the ovirt-engine command.
+# dnf install ovirt-engine 
+
 
 
 	
