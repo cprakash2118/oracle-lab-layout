@@ -13,3 +13,21 @@ base node- 172.168.21.56 (66/76/86)
 base node- 172.168.21.57 (67/77/87)
 base node- 172.168.21.58 (68/78/88)
 base node- 172.168.21.59 (69/79/89)
+#####
+Step 1) Base node (CentOS 8.5)
+Installed KVM packages and running "libvirtd" service.
+
+Step 2) Base node we already have done bridge part (enp1s0 - br0 & enp2s0 -br1)
+  br0 - internal network (172.168.21.XXX/24)
+  br1 - Internet access for repo download/installation.
+  
+Step 3) On base node, create VMs using Oracle Linux 8.6 image.
+        This image must be available on base machine.
+        http://172.168.21.15/iso/data/
+		
+	 # mkdir -p /var/www/html/data
+	 # cd /var/www/html/data
+	 # wget http://172.168.21.15/iso/data/OracleLinux-R8-U6-x86_64-dvd.iso
+	 
+	 
+		
