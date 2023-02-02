@@ -29,5 +29,16 @@ Step 3) On base node, create VMs using Oracle Linux 8.6 image.
 	 # cd /var/www/html/data
 	 # wget http://172.168.21.15/iso/data/OracleLinux-R8-U6-x86_64-dvd.iso
 	 
-	 
-		
+
+Step 4) Build Oracle Linux KVM virtualization manager (Engine).
+    - RAM     - 5GiB (5120MiB) 
+	- Core    - 2 cores 
+    - Storage - 25GB 
+    - OL86 image Location - /var/www/html/data/OracleLinux-R8-U6-x86_64-dvd.iso
+	- Interface - br0 & br1 (Both interface add before installation).
+	
+	
+	
+	
+
+	
