@@ -45,6 +45,28 @@ Step 4) Build Oracle Linux KVM virtualization manager (Engine).
 	 LVM name - rootVol 
 	 
 	 Time Zone - other imp update then initiate the installation.
+##### Example 
+vim /etc/hosts
+172.168.21.16   qcs-sl-base06.example.com   qcs-sl-base06
+172.168.21.21   qcs-basekvm-host01.example.com  qcs-basekvm-host01
+172.168.21.22   qcs-basekvm-host02.example.com  qcs-basekvm-host02
+
+
+Oracle Linux KVM host:-
+	Parttion details:-
+	"/boot" - 1024 (MiB) - On primary partition 
+    "/"     - 25 Gib     - On LVM 
+     VGname - "rootVG"
+	 LVM name - rootVol 
+
+
+# Disk partitioning information
+part pv.1105 --fstype="lvmpv" --ondisk=sda --size=227918
+part /boot --fstype="xfs" --ondisk=sda --size=1024
+volgroup rootVG --pesize=4096 pv.1105
+logvol / --fstype="xfs" --size=30720 --name=rootVol --vgname=rootVG
+logvol /var --fstype="xfs" --size=197191 --name=varVol --vgname=rootVG
+
 
 	
 	
