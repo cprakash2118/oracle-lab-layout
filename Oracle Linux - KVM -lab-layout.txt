@@ -108,6 +108,245 @@ Install the Manager using the ovirt-engine command.
 # dnf install ovirt-engine 
 
 
+##################
+[root@ol-kvm-host03~]#cd /etc/sysconfig/network-scripts/
+[root@ol-kvm-host03 network-scripts]# ls -lrth 
+total 12K
+-rw-r--r--. 1 root root 248 Feb  2 16:00 ifcfg-enp1s0
+-rw-r--r--. 1 root root 190 Feb  3 10:05 ifcfg-Wired_connection_1
+-rw-r--r--. 1 root root 450 Feb  3 10:05 ifcfg-ovirtmgmt
+[root@ol-kvm-host03 network-scripts]# cat ifcfg-Wired_connection_1 
+TYPE=Ethernet
+MTU=1500
+NAME="Wired connection 1"
+UUID=6665d802-02b2-35b6-87b0-be7ae3350b57
+DEVICE=enp2s0
+ONBOOT=yes
+LLDP=no
+BRIDGE=ovirtmgmt
+BRIDGE_UUID=6e17f735-cfc4-4fd8-9b74-3d5d46618932
+[root@ol-kvm-host03 network-scripts]# nmcli con show 
+NAME                UUID                                  TYPE      DEVICE    
+ovirtmgmt           6e17f735-cfc4-4fd8-9b74-3d5d46618932  bridge    ovirtmgmt 
+Wired connection 1  6665d802-02b2-35b6-87b0-be7ae3350b57  ethernet  enp2s0    
+enp1s0              e453d324-9142-4d8a-9a6b-4f8724efae50  ethernet  --        
+[root@ol-kvm-host03 network-scripts]# ll
+total 12
+-rw-r--r--. 1 root root 248 Feb  2 16:00 ifcfg-enp1s0
+-rw-r--r--. 1 root root 450 Feb  3 10:05 ifcfg-ovirtmgmt
+-rw-r--r--. 1 root root 190 Feb  3 10:05 ifcfg-Wired_connection_1
+[root@ol-kvm-host03 network-scripts]# cat ifcfg-ovirtmgmt 
+STP=no
+TYPE=Bridge
+HWADDR=
+MTU=1500
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=dhcp
+DEFROUTE=yes
+IPV4_DHCP_TIMEOUT=2147483647
+IPV4_FAILURE_FATAL=no
+IPV4_ROUTE_TABLE=254
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+DHCPV6_IAID=mac
+IPV6_RA_TIMEOUT=2147483647
+IPV6_DHCP_TIMEOUT=2147483647
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ROUTE_TABLE=254
+NAME=ovirtmgmt
+UUID=6e17f735-cfc4-4fd8-9b74-3d5d46618932
+DEVICE=ovirtmgmt
+ONBOOT=yes
+AUTOCONNECT_SLAVES=yes
+LLDP=no
+[root@ol-kvm-host03 network-scripts]# ll
+total 12
+-rw-r--r--. 1 root root 248 Feb  2 16:00 ifcfg-enp1s0
+-rw-r--r--. 1 root root 450 Feb  3 10:05 ifcfg-ovirtmgmt
+-rw-r--r--. 1 root root 190 Feb  3 10:05 ifcfg-Wired_connection_1
+[root@ol-kvm-host03 network-scripts]# cat ifcfg-enp1s0 
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=dhcp
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=enp1s0
+UUID=e453d324-9142-4d8a-9a6b-4f8724efae50
+DEVICE=enp1s0
+ONBOOT=yes
+[root@ol-kvm-host03 network-scripts]# 
+[root@ol-kvm-host03 network-scripts]# 
+[root@ol-kvm-host03 network-scripts]# cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.168.21.16   qcs-sl-base06.example.com   qcs-sl-base06
+172.168.21.20   ole-node01.example.com          ole-node01
+172.168.21.21   qcs-basekvm-host01.example.com  qcs-basekvm-host01
+172.168.21.22   qcs-basekvm-host02.example.com  qcs-basekvm-host02
+192.168.0.108   ol-kvm-host03.example.com      ol-kvm-host03
+[root@ol-kvm-host03 network-scripts]# cd /etc/yum.repos.d/
+[root@ol-kvm-host03 yum.repos.d]# pwd
+/etc/yum.repos.d
+[root@ol-kvm-host03 yum.repos.d]# ll
+total 20
+-rw-r--r--. 1 root root  246 Feb  2 20:36 oracle-gluster-ol8.repo
+-rw-r--r--. 1 root root 3005 Feb  3 09:53 oracle-linux-ol8.repo
+-rw-r--r--. 1 root root  417 May  5  2022 oracle-ovirt-ol8.repo
+-rw-r--r--. 1 root root  470 Feb  3 09:28 uek-ol8.repo
+-rw-r--r--. 1 root root  243 Feb  3 09:52 virt-ol8.repo
+[root@ol-kvm-host03 yum.repos.d]# cat oracle-gluster-ol8.repo 
+[ol8_gluster_appstream]
+name=Oracle Linux $releasever Gluster Appstream ($basearch)
+baseurl=https://yum$ociregion.oracle.com/repo/OracleLinux/OL8/gluster/appstream/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+[root@ol-kvm-host03 yum.repos.d]# 
+[root@ol-kvm-host03 yum.repos.d]# cat oracle-linux-ol8.repo
+[ol8_baseos_latest]
+name=Oracle Linux 8 BaseOS Latest ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/baseos/latest/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+
+[ol8_appstream]
+name=Oracle Linux 8 Application Stream ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/appstream/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+
+[ol8_codeready_builder]
+name=Oracle Linux 8 CodeReady Builder ($basearch) - Unsupported
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/codeready/builder/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_distro_builder]
+name=Oracle Linux 8 Distro Builder ($basearch) - Unsupported
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/distro/builder/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+
+[ol8_u0_baseos_base]
+name=Oracle Linux 8 BaseOS GA ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/0/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+#enabled=1
+
+[ol8_u1_baseos_base]
+name=Oracle Linux 8.1 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/1/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+#enabled=0
+enabled=0
+
+[ol8_u2_baseos_base]
+name=Oracle Linux 8.2 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/2/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_u3_baseos_base]
+name=Oracle Linux 8.3 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/3/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_u4_baseos_base]
+name=Oracle Linux 8.4 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/4/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_u5_baseos_base]
+name=Oracle Linux 8.5 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/5/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_u6_baseos_base]
+name=Oracle Linux 8.6 BaseOS ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/6/baseos/base/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+#enabled=0
+enabled=1
+
+[ol8_addons]
+name=Oracle Linux 8 Addons ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/addons/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+
+[ol8_u4_security_validation]
+name=Oracle Linux $releasever Update 4 ($basearch) Security Validations
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/4/security/validation/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+#enabled=0
+enabled=1
+
+[root@ol-kvm-host03 yum.repos.d]# cat oracle-ovirt-ol8.repo
+[ovirt-4.4]
+name=Latest oVirt 4.4 Release ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/ovirt44/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+enabled=1
+gpgcheck=1
+
+[ovirt-4.4-extra]
+name=oVirt 4.4 Extra ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/ovirt44/extras/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+enabled=1
+gpgcheck=1
+[root@ol-kvm-host03 yum.repos.d]# 
+[root@ol-kvm-host03 yum.repos.d]# cat uek-ol8.repo
+[ol8_UEKR6]
+name=Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux $releasever ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/UEKR6/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+
+[ol8_UEKR6_RDMA]
+name=Oracle Linux 8 UEK6 RDMA ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/UEKR6/RDMA/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=0
+[root@ol-kvm-host03 yum.repos.d]# cat virt-ol8.repo
+[ol8_kvm_appstream]
+name=Oracle Linux $releasever KVM Application Stream ($basearch)
+baseurl=https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/kvm/appstream/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle
+gpgcheck=1
+enabled=1
+[root@ol-kvm-host03 yum.repos.d]# 
+
+
+
+##########################
 
 	
 	
