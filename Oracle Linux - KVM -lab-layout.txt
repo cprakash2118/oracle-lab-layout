@@ -348,7 +348,34 @@ enabled=1
 
 ##########################
 
-	
-	
+#### Step -1: Creating a New User Account
+The ovirt-aaa-jdbc-tool user add command is used to create user accounts.
 
-	
+1. Log in to the host that is running the Manager.
+2. Create a new user account.
+
+To create a new user account:
+# ovirt-aaa-jdbc-tool user add user1 --attribute=firstName=User1 --attribute=lastName=Admin
+
+
+#### Step -2:
+Setting the Password for a User Account
+The ovirt-aaa-jdbc-tool password-reset command is used to set (or reset) passwords for a user account.
+
+To set (or reset) the password for a user account:
+1. Log in to the host that is running the Manager.
+2. Set (or reset) the password for a user account.
+
+#ovirt-aaa-jdbc-tool user password-reset username --password-valid-to yyyy-MM-dd HH:mm:ssX
+
+
+By default, the password policy for user accounts on the internal domain has the following restrictions:
+- A user password must be a minimum length of 6 characters.
+- When resetting a password, you cannot use the three previous passwords used for the user account.
+
+
+For more information on the password policy and other default settings, run the ovirt-aaa-jdbc-tool settings show command.
+The following example shows how to set a user password. In the example, 0800 stands for GMT minus 8 hours.
+
+
+ovirt-aaa-jdbc-tool user password-reset user1 --password-valid-to="2024-08-01 12:00:00-0800"
